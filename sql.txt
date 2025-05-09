@@ -36,5 +36,20 @@ SELECT name AS `item name` , sell_price AS 'selling price'
 FROM items
 ORDER BY sell_price DESC  ;
 
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('projector', 2000, 2500, 'acer', 10)
+
+//DISTINCT
+SELECT DISTINCT name FROM items; 
+
+SELECT  DISTINCT name, cost_price FROM items; 
+
+LIMIT
+SELECT name AS `item name` , sell_price AS 'selling price'
+FROM items
+ORDER BY sell_price DESC
+LIMIT 3
+
+
+
 
 
