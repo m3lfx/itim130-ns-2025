@@ -22,7 +22,14 @@ INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES(
 ('phone', 150.00, 155, 'apple', 40),
 ('keyboard', 200.00, 200.60, 'logitech', 30)  
 
-INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('sardinas', 100.00, NULL, 'ligo', 10)
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('', 100.00, NULL, 'ligo', 10)
+
+99999.99
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('projector', 100000, NULL, 'ligo', 10)
+
+SELECT name, sell_price 
+FROM items
+ORDER BY sell_price DESC  ;
 
 
 
