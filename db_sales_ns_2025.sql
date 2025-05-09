@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS `db_sales_ns_2025`.`orderline` (
   `order_id` INT NOT NULL,
   `quantity` INT NULL,
   PRIMARY KEY (`item_id`, `order_id`),
-  INDEX `fk_items_has_orders_orders1_idx` (`order_id` ASC) VISIBLE,
-  INDEX `fk_items_has_orders_items1_idx` (`item_id` ASC) VISIBLE,
+  INDEX `fk_items_has_orders_orders1_idx` (`order_id` ) ,
+  INDEX `fk_items_has_orders_items1_idx` (`item_id`),
   CONSTRAINT `fk_items_has_orders_items1`
     FOREIGN KEY (`item_id`)
     REFERENCES `db_sales_ns_2025`.`items` (`item_id`)
