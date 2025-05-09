@@ -32,7 +32,7 @@ FROM items
 ORDER BY sell_price DESC  ;
 
 //column alias
-SELECT name, sell_price 
+SELECT name AS `item name` , sell_price AS 'selling price'
 FROM items
 ORDER BY sell_price DESC  ;
 
