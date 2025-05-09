@@ -53,8 +53,33 @@ SELECT item_id, name AS `item name` , sell_price AS 'selling price'
 FROM items
 LIMIT 2,3
 
+WHERE clause 
 
+== <= >= <> != OR || And
 
+fetch all items with selling price greater than 55 pesos
+SELECT * 
+FROM items
+WHERE sell_price >= 155
+ORDER BY name
+
+SELECT item_id, name, sell_price 
+FROM items
+WHERE sell_price >= 155
+ORDER BY name
+
+fetch all items from supplier acer
+
+SELECT item_id, name, supplier_name
+FROM items 
+WHERE  supplier_name != 'acer'
+ORDER BY supplier_name DESC;
+
+fetch all items with cost price of greater 10 but the selling price is less than 5000
+
+SELECT name, cost_price, sell_price
+FROM items
+WHERE  cost_price > 10 AND sell_price < 2000
 
 
 
