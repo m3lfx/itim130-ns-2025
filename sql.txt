@@ -1,3 +1,24 @@
 https://drive.google.com/file/d/10MegpCzCiOVLoRRw0fjyDjOLrdQnXmCA/view?usp=drive_link
 
+CRUD 
+create read update delete
+
+//INSERT
+
+INSERT INTO table_name(col1, col2, coln,) VALUES('value1', 12, 5.00);
+
+INSERT INTO items(item_id, name, cost_price, sell_price, supplier_name, quantity) VALUES(1, 'laptop', 100.00, 150.50, 'acer', 10)
+
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('mouse', 200.00, 350.50, 'acer', 24)
+
+//SELECT
+
+SELECT * FROM table_name; 
+
+SELECT * FROM items;
+SELECT name, cost_price FROM items; 
+
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('mouse', 200.00, 350.50, 'acer', 24)
+
+
 
