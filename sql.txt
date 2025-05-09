@@ -18,7 +18,11 @@ SELECT * FROM table_name;
 SELECT * FROM items;
 SELECT name, cost_price FROM items; 
 
-INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('mouse', 200.00, 350.50, 'acer', 24)
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('softdrinks', 50.00, 55, 'sprite', 20), 
+('phone', 150.00, 155, 'apple', 40),
+('keyboard', 200.00, 200.60, 'logitech', 30)  
+
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('sardinas', 100.00, NULL, 'ligo', 10)
 
 
 
