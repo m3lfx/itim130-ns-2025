@@ -81,6 +81,15 @@ SELECT name, cost_price, sell_price
 FROM items
 WHERE  cost_price > 10 AND sell_price < 2000
 
+fetch all products from supplier ligo or acer
+
+SELECT item_id, name, supplier_name
+FROM items
+WHERE (supplier_name = 'ligo' and supplier_name = 'acer') OR supplier_name = 'acer'
+()
+MDAS
+relation
+logical
 
 
 
