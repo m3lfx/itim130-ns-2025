@@ -49,6 +49,10 @@ FROM items
 ORDER BY sell_price DESC
 LIMIT 3
 
+SELECT name AS `item name` , sell_price AS 'selling price'
+FROM items
+LIMIT 3
+
 
 
 
