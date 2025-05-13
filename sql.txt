@@ -167,6 +167,39 @@ SELECT *
 FROM customers
 WHERE  last_name LIKE '%S%'
 
+order data
+INSERT INTO orders (date_ordered, date_delivered, status, customer_id)
+VALUES(now(), NULL, 'processing', 1 )
+
+orderline
+
+INSERT INTO orderline(order_id, item_id, quantity)
+VALUES(1, 1, 1),(1,2,2)
+
+INSERT INTO orderline(order_id, item_id, quantity)
+VALUES(2, 5, 1)
+
+INSERT INTO orderline(order_id, item_id, quantity)
+VALUES(3, 3, 5), (3, 4, 10), (3,5,8) 
+
+inserting child row without parent
+INSERT INTO orders (date_ordered, date_delivered, status, customer_id)
+VALUES(now(), NULL, 'processing', 100 )
+
+INSERT INTO orderline(order_id, item_id, quantity)
+VALUES(3, 100, 5)
+
+enum insert value
+INSERT INTO orders (date_ordered, date_delivered, status, customer_id)
+VALUES(now(), NULL, 'pending', 3 )
+
+LAST INSERT ID Function
+INSERT INTO orders (date_ordered, date_delivered, status, customer_id)
+VALUES(now(), NULL, 'processing', 6 );
+INSERT INTO orderline(order_id, item_id, quantity)
+VALUES(LAST_INSERT_ID(), 3, 10);
+INSERT INTO orderline(order_id, item_id, quantity) VALUES (LAST_INSERT_ID(), 6, 4); 
+
 
 
 
