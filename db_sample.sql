@@ -41,8 +41,8 @@ drop table if exists stock;
 
 CREATE TABLE stock
 (
-	item_id		int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	quantity	int NOT NULL
+	item_id	int NOT NULL,
+	quantity int NOT NULL
 );
 
 drop table if exists orderline;

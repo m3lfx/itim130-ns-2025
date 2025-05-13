@@ -220,6 +220,18 @@ UPDATE items
 SET quantity = 10
 WHERE supplier_name = "acer"
 
+delete
+DELETE FROM table_name WHERE condition
+
+DELETE FROM items WHERE item_id = 8
+
+INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES('ps5', 2000.00, 25000.50, 'sony', 20)
+
+DELETE FROM orderline WHERE item_id = 1;
+delete from items where item_id = 1;
+
+INSERT into stock(item_id, quantity) VALUES(1,2), (2,2), (3,4)
+
 
 
 
