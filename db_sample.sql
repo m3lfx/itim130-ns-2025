@@ -64,13 +64,13 @@ CREATE TABLE barcode
 );
 
 #CUSTOMER TABLE
-insert into customer(title, fname, lname, addressline, town, zipcode, phone)
+insert into customers(title, fname, lname, addressline, town, zipcode, phone)
 	values('Miss','jenny','stones','27 Rowan Avenue','hightown','NT21AQ','023 9876');
-insert into customer(title, fname, lname, addressline, town, zipcode, phone)
+insert into customers(title, fname, lname, addressline, town, zipcode, phone)
 	values('Mr','Andrew','stones','52 The willows','lowtown','LT57RA','876 3527');
-insert into customer(title, fname, lname, addressline, town, zipcode, phone)
+insert into customers(title, fname, lname, addressline, town, zipcode, phone)
 	values('Miss','Alex','Matthew','4 The Street','Nicetown','NT22TX','010 4567');
-insert into customer(title, fname, lname, addressline, town, zipcode, phone)
+insert into customers(title, fname, lname, addressline, town, zipcode, phone)
 	values('Mr','Adrian','MAtthew','The Barn','Yuleville','YV672WR','487 3871');
 insert into customer(title, fname, lname, addressline, town, zipcode, phone)
 	values('Mr','Simon','Cozens','7 Shady Lane','Oahenham','OA36Qw','514 5926');

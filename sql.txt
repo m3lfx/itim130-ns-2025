@@ -91,5 +91,24 @@ MDAS
 relation
 logical
 
+INSERT INTO customers( first_name, last_name, address, city,  phone) VALUES('jenny','stones','27 Rowan Avenue','hightown','023 9876'), 
+('Andrew','stones','52 The willows','lowtown','876 3527'), 
+('Miss','Alex','Matthew','4 The Street','Nicetown', '010 4567'), ('Adrian','MAtthew','The Barn','Yuleville','487 3871'),
+('Mr','Simon','Cozens','7 Shady Lane','Oahenham','514 5926'), 
+('Neil','Matther','5 Pasture Lane','Nicetown','267 1232'), 
+('Richard','stones','34 Holly Way','Bingham','342 5982'), 
+('Ann','stones','34 Holly Way','Bingham','342 5982'), 
+('Mrs','Christine','Hickman','36 Queen Street','Histon','342 5432'), 
+('Mike','Howard','86 Dysart Street','Tibsville','505 5482'), 
+('Dave','Jones','54 Vale Rise','Bingham','342 8264'), 
+('Richard','Neil','42 Thached Way','Winersbay','505 6482'), 
+('Laura','Hendy','73 MArgaritta Way','Oxbridge','OX23HX','821 2335'), 
+('Bill','O\Neil','2 Beamer Street','Welltown','435 1234'), 
+('David','Hudson','4 The Square','Milltown','961 4526');
+
+
+
+
+
 
 
