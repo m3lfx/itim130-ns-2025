@@ -237,10 +237,32 @@ CREATE TABLE stock(
 	quantity    int NOT NULL
 );
 
+BETWEEN
+SELECT * FROM customers 
+WHERE customer_id BETWEEN 9 AND 5
+
+fetch all orders for the month of May 
+SELECT * 
+FROM orders
+WHERE date_ordered >= '2025-06-01' AND date_ordered <= '2025-06-30'
 
 
+UPDATE orders SET date_ordered = '2025-06-09' WHERE order_id = 1
 
+SELECT * 
+FROM orders
+WHERE date_ordered BETWEEN '2025-06-01' AND '2025-06-30'
 
+SELECT month('2025-06-01')
+SELECT monthname('2025-06-01')
+
+SELECT order_id, monthname(date_ordered)
+FROM orders;
+
+SELECT order_id, weekday(date_ordered)
+FROM orders;
+
+SELECT date_format(now(), '%a %D of %M %Y')
 
 
 
