@@ -264,6 +264,21 @@ FROM orders;
 
 SELECT date_format(now(), '%a %D of %M %Y')
 
+SELECT order_id, date_format(date_ordered, '%a %D of %M %Y')
+FROM orders;
+
+
+DATE_ADD
+
+SELECT date_add(now(), INTERVAL 10 year)
+
+update date date_delivered order 1
+
+UPDATE orders SET date_delivered = date_add(date_ordered, INTERVAL 365 DAY) 
+WHERE order_id = 6;
+
+UPDATE orders SET date_delivered = date_add(date_ordered, INTERVAL 15 DAY) 
+WHERE order_id IN (2, 3, 5, 7);
 
 
 
