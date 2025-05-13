@@ -230,7 +230,13 @@ INSERT INTO items(name, cost_price, sell_price, supplier_name, quantity) VALUES(
 DELETE FROM orderline WHERE item_id = 1;
 delete from items where item_id = 1;
 
-INSERT into stock(item_id, quantity) VALUES(1,2), (2,2), (3,4)
+INSERT into stock(quantity) VALUES(2), (2), (4)
+
+CREATE TABLE stock(
+    item_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	quantity    int NOT NULL
+);
+
 
 
 
