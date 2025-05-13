@@ -124,6 +124,27 @@ WHERE BINARY city = 'bingham'
 
 LIKE
 
+find customers last name that starts with 's'
+
+SELECT * 
+FROM customers
+WHERE last_name LIKE 's%'
+
+find customers last name that ends with an 's'
+
+SELECT * 
+FROM customers
+WHERE last_name LIKE '%s'
+
+find customers last name that contains an 's'
+
+SELECT * 
+FROM customers
+WHERE last_name LIKE '%s'
+
+
+
+
 
 
 
