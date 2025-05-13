@@ -140,7 +140,24 @@ find customers last name that contains an 's'
 
 SELECT * 
 FROM customers
-WHERE last_name LIKE '%s'
+WHERE last_name LIKE '%s%'
+
+find customers that has exactly 4 characters in their first name
+
+SELECT * 
+FROM customers
+WHERE first_name LIKE '____'
+
+fetch items that has 150 in their selling price
+SELECT * 
+FROM items
+WHERE sell_price LIKE '150%'
+
+fetch all customer with 'on' as last characters on their last name
+SELECT * 
+FROM customers
+WHERE last_name LIKE '%on '
+
 
 
 
