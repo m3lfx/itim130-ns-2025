@@ -158,6 +158,14 @@ SELECT *
 FROM customers
 WHERE last_name LIKE '%on '
 
+fetch all customers with an 's' on first name and their city has an 'e' 
+SELECT * 
+FROM customers
+WHERE BINARY last_name LIKE '%S%' or city LIKE '%e%'
+
+SELECT * 
+FROM customers
+WHERE  last_name LIKE '%S%'
 
 
 
