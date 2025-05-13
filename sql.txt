@@ -281,4 +281,47 @@ UPDATE orders SET date_delivered = date_add(date_ordered, INTERVAL 15 DAY)
 WHERE order_id IN (2, 3, 5, 7);
 
 
+fetch customer and their orders 
+table JOIN
+
+SELECT c.customer_id, o.order_id, c.last_name, o.date_ordered, o.status
+FROM customers c, orders o
+WHERE c.customer_id = o.customer_id
+
+fetch specific order by last name
+SELECT c.customer_id, o.order_id, c.last_name, o.date_ordered, o.status
+FROM customers c, orders o
+WHERE c.customer_id = o.customer_id
+AND c.last_name = 'hudson'
+
+fetch all orders from nicetown
+
+SELECT c.customer_id, o.order_id, c.last_name, o.date_ordered, o.status, c.city
+FROM customers c, orders o
+WHERE c.customer_id = o.customer_id
+AND c.city = 'nicetown'
+
+fetch all orders and their customer for the month of may
+
+SELECT c.customer_id, o.order_id, c.last_name, monthname(o.date_ordered), o.status, c.city
+FROM customers c, orders o
+WHERE c.customer_id = o.customer_id
+AND o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
+
+SELECT c.customer_id, o.order_id, c.last_name, monthname(o.date_ordered), o.status, c.city
+FROM customers c, orders o
+WHERE c.customer_id = o.customer_id
+AND month(o.date_ordered) = 6
+
+fetch all customer and the items they ordered
+SELECT c.customer_id, o.order_id, c.last_name, o.status, ol.item_id, i.name
+FROM customers c, orders o, orderline ol, items i
+WHERE c.customer_id = o.customer_id
+AND o.order_id = ol.order_id
+AND i.item_id = ol.item_id
+AND c.last_name = 'hudson'
+
+
+
+
 
