@@ -200,6 +200,25 @@ INSERT INTO orderline(order_id, item_id, quantity)
 VALUES(LAST_INSERT_ID(), 3, 10);
 INSERT INTO orderline(order_id, item_id, quantity) VALUES (LAST_INSERT_ID(), 6, 4); 
 
+UPDATE
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+UPDATE items
+SET sell_price = 150
+WHERE item_id = 6
+
+UPDATE items
+SET sell_price = 150, name = 'shoes' 
+WHERE item_id = 7
+
+UPDATE items
+SET sell_price = sell_price + 10  
+
+UPDATE items
+SET quantity = 10
+WHERE supplier_name = "acer"
 
 
 
