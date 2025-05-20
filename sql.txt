@@ -333,20 +333,25 @@ AND c.city IN ('nicetown', 'bingham')
 //INNER JOIN
 
 SELECT o.order_id, c.last_name, c.city, date_format(date_ordered, '%a %D of %M %Y'), i.name
-FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) 
+INNER JOIN orderline ol ON (o.order_id = ol.order_id)
 INNER JOIN  items i ON (i.item_id = ol.item_id)
 WHERE c.city IN ('nicetown', 'bingham')
 
-
-
-
-
-
-
-
-
-
 fetch all items that were bought on may 2025.
+
+SELECT i.name, o.date_ordered, ol.quantity 
+FROM orders o INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
+ORDER BY ol.quantity
+
+
+
+
+
+
+
 
 what items are being bought in bulk (10 or more items)
 
