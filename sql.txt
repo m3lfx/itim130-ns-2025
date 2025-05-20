@@ -380,4 +380,34 @@ AND c.city = 'nicetown'
 ORDER BY ol.quantity DESC
 LIMIT 1
 
+UPDATE items SET supplier_name = NULL WHERE item_id = 7
+AGGREGATE functions
+
+SELECT count(*) FROM customers;
+
+SELECT count(name) FROM items;
+
+SELECT count(supplier_name) FROM items;
+
+SELECT max(quantity) FROM orderline
+
+SELECT i.name, max(ol.quantity) AS 'top selling' FROM items i INNER JOIN orderline ol ON (i.item_id = ol.item_id)
+
+fetch an item that is in critical stock
+SELECT name, min(quantity) from items
+
+total cost_price 
+SELECT sum(cost_price) FROM items;
+average 
+
+SELECT avg(sell_price) FROM items;
+
+SELECT min(date_delivered) from orders;
+SELECT max(date_delivered) from orders;
+
+get the total payment of one order 
+SELECT o.order_id, sum(i.sell_price * ol.quantity) AS total
+FROM orders o INNER JOIN orderline ol ON(o.order_id = ol.order_id) 
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE o.order_id = 3
 
