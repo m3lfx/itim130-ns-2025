@@ -346,16 +346,28 @@ INNER JOIN items i ON (i.item_id = ol.item_id)
 WHERE o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
 ORDER BY ol.quantity
 
-
-
-
-
-
-
+SELECT i.name, o.date_ordered, ol.quantity 
+FROM orders o INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE monthname(o.date_ordered) = 'may'
+ORDER BY ol.quantity
 
 what items are being bought in bulk (10 or more items)
+SELECT i.name, o.date_ordered, ol.quantity 
+FROM orders o INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE ol.quantity >= 10
 
 what items that were delivered on may to milltown,
+SELECT   c.city, date_format(date_ordered, '%a %D of %M %Y'), i.name, ol.quantity
+FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) 
+INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+INNER JOIN  items i ON (i.item_id = ol.item_id)
+WHERE o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
+AND c.city = 'milltown'
+
+
+
 
 top 1 selling item from milltown for the month of may
 
