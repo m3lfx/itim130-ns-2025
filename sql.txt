@@ -476,8 +476,23 @@ get the profit for each city
 SELECT  c.city, sum(i.sell_price * ol.quantity) AS total
 FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) INNER JOIN orderline ol ON(o.order_id = ol.order_id) 
 INNER JOIN items i ON (i.item_id = ol.item_id)
-GROUP BY c.city
+GROUP BY c.city WITH ROLLUP
 ORDER BY total DESC
+
+get the profit for each month
+SELECT monthname(o.date_ordered), sum(i.sell_price * ol.quantity) AS total
+FROM orders o INNER JOIN orderline ol ON(o.order_id = ol.order_id) 
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE o.date_ordered BETWEEN '2025-01-01' AND '2025-12-31'
+GROUP BY month(o.date_ordered)
+
+SELECT monthname(o.date_delivered), sum(i.sell_price * ol.quantity) AS total
+FROM orders o INNER JOIN orderline ol ON(o.order_id = ol.order_id) 
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE o.date_delivered BETWEEN '2025-01-01' AND '2025-12-31'
+GROUP BY month(o.date_delivered)
+
+
 
 
 
