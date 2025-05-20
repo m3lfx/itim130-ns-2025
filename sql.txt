@@ -417,4 +417,10 @@ SELECT  monthname(o.date_ordered), sum(ol.quantity) as 'total items sold'
 FROM orders o INNER JOIN orderline ol ON (o.order_id = ol.order_id) 
 WHERE o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
 
+calculate profit for month of may
+SELECT monthname(o.date_ordered), sum(i.sell_price * ol.quantity) AS total
+FROM orders o INNER JOIN orderline ol ON(o.order_id = ol.order_id) 
+INNER JOIN items i ON (i.item_id = ol.item_id)
+WHERE o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
+
 
