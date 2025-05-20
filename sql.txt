@@ -470,5 +470,14 @@ SELECT i.item_id, i.name, sum(i.sell_price * ol.quantity) AS total
 FROM items i INNER JOIN orderline ol ON (i.item_id = ol.item_id)
 GROUP BY i.item_id
 ORDER BY total DESC
+LIMIT 3
+
+get the profit for each city
+SELECT  c.city, sum(i.sell_price * ol.quantity) AS total
+FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) INNER JOIN orderline ol ON(o.order_id = ol.order_id) 
+INNER JOIN items i ON (i.item_id = ol.item_id)
+GROUP BY c.city
+ORDER BY total DESC
+
 
 
