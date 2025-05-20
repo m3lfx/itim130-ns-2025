@@ -322,6 +322,29 @@ AND i.item_id = ol.item_id
 AND c.last_name = 'hudson'
 
 
+fetch all customers from nicetown or bingham and the items they ordered
+SELECT o.order_id, c.last_name, c.city, date_format(date_ordered, '%a %D of %M %Y'), i.name
+FROM customers c, orders o, orderline ol, items i 
+WHERE c.customer_id = o.customer_id
+AND o.order_id = ol.order_id
+AND i.item_id = ol.item_id
+AND c.city IN ('nicetown', 'bingham')
 
+
+
+
+
+
+
+
+
+
+fetch all items that were bought on may 2025.
+
+what items are being bought in bulk (10 or more items)
+
+what items that were delivered on may to milltown,
+
+top 1 selling item from milltown for the month of may
 
 
