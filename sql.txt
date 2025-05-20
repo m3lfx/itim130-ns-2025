@@ -369,6 +369,15 @@ AND c.city = 'milltown'
 
 
 
-top 1 selling item from milltown for the month of may
+top 1 selling item from nicetown for the month of may
+
+SELECT   c.city, date_format(date_ordered, '%a %D of %M %Y'), i.name, ol.quantity
+FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) 
+INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+INNER JOIN  items i ON (i.item_id = ol.item_id)
+WHERE o.date_ordered BETWEEN '2025-05-01' AND '2025-05-31'
+AND c.city = 'nicetown'
+ORDER BY ol.quantity DESC
+LIMIT 1
 
 
