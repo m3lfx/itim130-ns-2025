@@ -330,6 +330,13 @@ AND o.order_id = ol.order_id
 AND i.item_id = ol.item_id
 AND c.city IN ('nicetown', 'bingham')
 
+//INNER JOIN
+
+SELECT o.order_id, c.last_name, c.city, date_format(date_ordered, '%a %D of %M %Y'), i.name
+FROM customers c INNER JOIN orders o ON (c.customer_id = o.customer_id) INNER JOIN orderline ol ON (o.order_id = ol.order_id)
+INNER JOIN  items i ON (i.item_id = ol.item_id)
+WHERE c.city IN ('nicetown', 'bingham')
+
 
 
 
