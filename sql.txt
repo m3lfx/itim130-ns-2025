@@ -492,6 +492,85 @@ INNER JOIN items i ON (i.item_id = ol.item_id)
 WHERE o.date_delivered BETWEEN '2025-01-01' AND '2025-12-31'
 GROUP BY month(o.date_delivered)
 
+Select last_name from customers where binary last_name REGEXP "^H.*";
+Select last_name from customers where binary last_name REGEXP ".*on.+";
+Select last_name from customers where binary last_name REGEXP ".*on.+";
+Select last_name from customers where binary last_name REGEXP ".*[on].*";
+Select last_name from customers where binary last_name REGEXP "^[^SJ]";
+
+Select last_name from customers where binary last_name REGEXP "^[A-Z_0-9]";
+
+Select strcmp('foo', 'foo');
+Select strcmp('foo', 'FOO');
+Select strcmp('foo', binary 'FOO');
+Select strcmp('foo', 'bar');
+Select ceiling(2.2), floor(2.4),round(2.2)
+Select name, MID(name,2), 
+UPPER(name) 
+FROM items where item_id = 6;
+
+Select ASCII('A'),
+Char(65,66,67),
+Concat('hello',0x20,0x57, 'orld');
+
+
+CREATE TABLE testcolcons (
+  Colnotnull INT NOT NULL PRIMARY KEY, 
+  Colprikey INT NOT NULL PRIMARY KEY,
+  Coldefault  INT DEFAULT 42);
+
+INSERT INTO testcolcons(colnotnull, colprikey,coldefault) values(1,1,1);
+INSERT INTO testcolcons(colnotnull, colprikey,coldefault) values(2,2,NULL);
+INSERT INTO testcolcons(colnotnull, colprikey,coldefault) values(NULL,3,NULL);
+INSERT INTO testcolcons(colnotnull, colprikey,coldefault) values(3,2,NULL);
+INSERT INTO testcolcons(colnotnull, colprikey) values(3,3);
+
+Create table ttconst (
+  mykey1 INT, 
+  mykey2 INT NOT NULL, 
+  mystring varchar(15) NOT NULL,
+  CONSTRAINT cs1 UNIQUE(mykey1), 
+  CONSTRAINT cs2 PRIMARY KEY (mykey2,mystring));
+
+  Insert into ttconst values(1,2, 'Amy Jones');
+Insert into ttconst values(1,2, 'Dave jones');
+Insert into ttconst values(2,2, 'Dave jones');
+Insert into ttconst values(3,2, 'Amy Jones');
+
+ALTER TABLE table-name ADD COLUMN column-name column-type
+[first | after column name]
+ALTER TABLE table-name DROP COLUMN  column-name
+ALTER TABLE table-name CHANGE COLUMN column-name new-name new-type
+ALTER TABLE old-table-name RENAME TO new-table-name
+ALTER TABLE ADD PRIMARY KEY (column list)
+ALTER TABLE DROP PRIMARY KEY
+
+ALTER TABLE customers ADD COLUMN zipcode varchar(10) AFTER phone;
+ALTER TABLE customers CHANGE COLUMN zipcode zipcode2 char(15);
+
+ALTER TABLE customers CHANGE COLUMN 
+	f_first_name first_name char(32) NOT NULL ;
+ALTER TABLE customers ADD PRIMARY KEY (fname,lname);
+
+CREATE TABLE orderinfo (
+  orderinfo_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, 
+  customer_id INT NOT NULL, 
+  date_placed date NOT NULL, 
+  date_shipped date, 
+  shipping decimal(7,2),
+  INDEX(customer_id),
+	CONSTRAINT orderinfo_customer_id_fk FOREIGN KEY (customer_id) 
+  REFERENCES customers(customer_id)
+);
+
+LOAD DATA [LOCAL] INFILE filename INTO TABLE tablename [FIELDS[TERMINATED BY 'char'] [ENCLOSED BY 'char'] [ESCAPED BY 'char']] [ LINES TERMINATED BY 'char']
+	IGNORE n LINES ] [column1, column2,…
+
+LOAD DATA LOCAL INFILE 'd:/itim130-s-2025/cust.txt' INTO TABLE customers FIELDS TERMINATED BY ',' (first_name, last_name, address, city, phone, zipcode2);
+
+mysqlimport  –-local –-password –-user=root --fields-terminated-by=, --columns=first_name,last_name,address,city,phone,zipcode2 db_sales_s_2025  d:/itim130-s-2025/customer.txt 
+
+
 
 
 
