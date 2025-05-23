@@ -493,19 +493,19 @@ WHERE o.date_delivered BETWEEN '2025-01-01' AND '2025-12-31'
 GROUP BY month(o.date_delivered)
 
 Select last_name from customers where binary last_name REGEXP "^H.*";
-Select last_name from customers where binary last_name REGEXP ".*on.+";
+Select last_name from customers where binary last_name REGEXP ".*on.*";
 Select last_name from customers where binary last_name REGEXP ".*on.+";
 Select last_name from customers where binary last_name REGEXP ".*[on].*";
-Select last_name from customers where binary last_name REGEXP "^[^SJ]";
+Select last_name from customers where binary last_name REGEXP "^[^SJH]";
 
-Select last_name from customers where binary last_name REGEXP "^[A-Z_0-9]";
+Select last_name from customers where binary last_name REGEXP "^[A-Z0-9_]";
 
 Select strcmp('foo', 'foo');
 Select strcmp('foo', 'FOO');
 Select strcmp('foo', binary 'FOO');
 Select strcmp('foo', 'bar');
 Select ceiling(2.2), floor(2.4),round(2.2)
-Select name, MID(name,2), 
+Select name, MID(name,2,4), 
 UPPER(name) 
 FROM items where item_id = 6;
 
@@ -548,8 +548,7 @@ ALTER TABLE DROP PRIMARY KEY
 ALTER TABLE customers ADD COLUMN zipcode varchar(10) AFTER phone;
 ALTER TABLE customers CHANGE COLUMN zipcode zipcode2 char(15);
 
-ALTER TABLE customers CHANGE COLUMN 
-	f_first_name first_name char(32) NOT NULL ;
+ALTER TABLE customers CHANGE COLUMN first_name first_name char(32) NOT NULL ;
 ALTER TABLE customers ADD PRIMARY KEY (fname,lname);
 
 CREATE TABLE orderinfo (
@@ -566,10 +565,382 @@ CREATE TABLE orderinfo (
 LOAD DATA [LOCAL] INFILE filename INTO TABLE tablename [FIELDS[TERMINATED BY 'char'] [ENCLOSED BY 'char'] [ESCAPED BY 'char']] [ LINES TERMINATED BY 'char']
 	IGNORE n LINES ] [column1, column2,…
 
-LOAD DATA LOCAL INFILE 'd:/itim130-s-2025/cust.txt' INTO TABLE customers FIELDS TERMINATED BY ',' (first_name, last_name, address, city, phone, zipcode2);
+LOAD DATA LOCAL INFILE 'd:/itim130-ns-2025/cust.txt' INTO TABLE customers FIELDS TERMINATED BY ',' (first_name, last_name, address, city, phone, zipcode2);
 
-mysqlimport  –-local –-password –-user=root --fields-terminated-by=, --columns=first_name,last_name,address,city,phone,zipcode2 db_sales_s_2025  d:/itim130-s-2025/customer.txt 
+mysqlimport  –-local –p –-user=root --fields-terminated-by=, --columns=first_name,last_name,address,city,phone,zipcode2 db_sales_ns_2025  d:/itim130-ns-2025/customers.txt 
 
+Imports MySql.Data.MySqlClient
+Public Class Form1
+    Dim conn As MySqlConnection = New MySqlConnection("Data Source=localhost;Database=db_sales_s_2025;User=root;Password=;")
+    'Public dbconn As New MySqlConnection
+    Public sql As String
+    Public dbcomm As MySqlCommand
+    Public dbread As MySqlDataReader
+    Public DataAdapter1 As MySqlDataAdapter
+    Public ds As DataSet
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            conn.Open()
+            sql = "select * from customer"
+            dbcomm = New MySqlCommand(sql, conn)
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "customer1")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "customer1"
+
+
+        Catch ex As Exception
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim customer_id As Integer
+        Try
+            conn.Open()
+            'MsgBox("database connected")
+            customer_id = Val(TextBox1.Text)
+            sql = "SELECT * FROM customer WHERE customer_id = " & customer_id
+            dbcomm = New MySqlCommand(sql, conn)
+            dbread = dbcomm.ExecuteReader()
+            dbread.Read()
+            'TextBox2.Text = dbread("customer_id")
+            TextBox2.Text = dbread("title")
+            TextBox3.Text = dbread("lname")
+            TextBox4.Text = dbread("fname")
+            TextBox5.Text = dbread("addressline")
+            TextBox6.Text = dbread("town")
+            TextBox7.Text = dbread("zipcode")
+            TextBox8.Text = dbread("phone")
+        Catch ex As MySqlException
+            MsgBox("no customer found")
+            conn.Close()
+        End Try
+        conn.Close()
+    End Sub
+
+    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
+
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim title = TextBox2.Text
+        Dim firstName = TextBox3.Text
+        Dim lastName = TextBox4.Text
+        Dim address = TextBox5.Text
+        Dim town = TextBox6.Text
+        Dim zip = TextBox7.Text
+        Dim phone = TextBox8.Text
+        Try
+            conn.Open()
+                sql = $"INSERT INTO customers (first_name, last_name, address, city, phone, zipcode2) VALUES ('{firstName}','{lastName}', '{address}', '{city}', '{phone}', '{zip}')"
+            sql = "INSERT INTO customer (title, fname, lname, addressline, town, zipcode, phone) VALUES ('" & title & "','" & firstName & "','" & lastName & "','" & address & "','" & town & "','" & zip & "','" & phone & "')"
+            dbcomm = New MySqlCommand(sql, conn)
+            Dim i As Integer = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+        Catch ex As MySqlException
+            MsgBox("customer not created")
+            conn.Close()
+        End Try
+        Label1.Text = sql
+        conn.Close()
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim customerId = Val(TextBox1.Text)
+        Dim title = TextBox2.Text
+        Dim firstName = TextBox3.Text
+        Dim lastName = TextBox4.Text
+        Dim address = TextBox5.Text
+        Dim town = TextBox6.Text
+        Dim zip = TextBox7.Text
+        Dim phone = TextBox8.Text
+        Try
+            conn.Open()
+            sql = $"UPDATE customer SET title = '{title}', lname = '{lastName}', fname = '{firstName}', addressline = '{address}', town = '{town}', zipcode = '{zip}', phone= '{phone}' WHERE customer_id = {customerId}"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            Dim i As Integer = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record updated")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+        Catch ex As Exception
+
+        End Try
+        conn.Close()
+
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Try
+            conn.Open()
+            Dim id As Integer = InputBox("enter customer id to be deleted", "delete record")
+            Dim ans = MessageBox.Show("do you want to delete this record?", "record deleted", MessageBoxButtons.YesNoCancel)
+            If ans = DialogResult.Yes Then
+                sql = $"DELETE FROM customer WHERE customer_id = {id}"
+                dbcomm = New MySqlCommand(sql, conn)
+                Dim i As Integer = dbcomm.ExecuteNonQuery
+
+                If (i > 0) Then
+                    MsgBox("record deleted")
+                Else
+                    MsgBox("record not deleted")
+
+                End If
+            End If
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        End Try
+    End Sub
+End Class
+
+//items crud 
+Try
+            conn.Open()
+            sql = "SELECT i.item_id AS 'id', i.name AS name, i.cost_price AS cost, i.sell_price as `SELling price`, s.quantity FROM items i INNER  JOIN stocks s ON (i.item_id = s.item_id) ORDER BY i.item_id DESC"
+            sql = "SELECT i.item_id, i.description, i.cost_price, i.sell_price, s.quantity FROM item i LEFT OUTER JOIN stock s ON i.item_id = s.item_id ORDER BY i.item_id DESC"
+            dbcomm = New MySqlCommand(sql, conn)
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "item")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "item"
+        Catch ex As MySqlException
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+            conn.Close()
+
+        End Try
+
+        conn.Close()
+
+ Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim i As Integer = 0
+        Dim description As String = TextBox1.Text
+        Dim costPrice As Decimal = TextBox2.Text
+        Dim sellPrice As Decimal = TextBox3.Text
+        Dim quantity As Integer = NumericUpDown1.Value
+
+        Try
+            conn.Open()
+            sql = $"INSERT INTO item (description, cost_price, sell_price) VALUES('{description}', {costPrice}, {sellPrice})"
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+            sql = $"INSERT INTO stock (item_id, quantity) VALUES(last_insert_id(), {quantity})"
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+        conn.Close()
+
+Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim i As Integer = 0
+        Dim description As String = TextBox1.Text
+        Dim costPrice As Decimal = TextBox2.Text
+        Dim sellPrice As Decimal = TextBox3.Text
+        Dim quantity As Integer = NumericUpDown1.Value
+
+        Try
+            conn.Open()
+            sql = $"INSERT INTO item (description, cost_price, sell_price) VALUES('{description}', {costPrice}, {sellPrice})"
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+            sql = $"INSERT INTO stock (item_id, quantity) VALUES(last_insert_id(), {quantity})"
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+        conn.Close()
+Private Sub TextBox4_TextChanged(sender As Object, e As EventArgs) Handles TextBox4.TextChanged
+        Dim itemId = Val(TextBox4.Text)
+
+        Try
+            conn.Open()
+            sql = $"SELECT i.item_id AS `item id`, i.description, i.cost_price, i.sell_price, s.quantity FROM item i INNER JOIN stock s ON i.item_id = s.item_id WHERE i.item_id = {itemId}"
+            dbcomm = New MySqlCommand(sql, conn)
+            dbread = dbcomm.ExecuteReader()
+            dbread.Read()
+            TextBox1.Text = dbread("description")
+            TextBox2.Text = dbread("cost_price")
+            TextBox3.Text = dbread("sell_price")
+            NumericUpDown1.Value = dbread("quantity")
+            TextBox7.Text = dbread("item id")
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+
+        End Try
+        conn.Close()
+    End Sub
+
+  Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs) Handles TextBox5.TextChanged
+        Dim description As String = TextBox5.Text
+        Try
+            conn.Open()
+            sql = "SELECT i.item_id, i.description, i.cost_price, i.sell_price, s.quantity FROM item i INNER JOIN stock s ON i.item_id = s.item_id WHERE i.description LIKE '%{description}%'"
+            dbcomm = New MySqlCommand(sql, conn)
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "item")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "item"
+        Catch ex As MySqlException
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+
+        conn.Close()
+    End Sub
+
+    Private Sub TextBox6_TextChanged(sender As Object, e As EventArgs) Handles TextBox6.TextChanged
+        Dim description As String = TextBox6.Text
+        Try
+            conn.Open()
+            sql = "SELECT i.item_id, i.description, i.cost_price, i.sell_price, s.quantity FROM item i INNER JOIN stock s ON i.item_id = s.item_id WHERE i.description LIKE '%{description}%'"
+            dbcomm = New MySqlCommand(sql, conn)
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "search_item")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "search_item"
+        Catch ex As MySqlException
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+
+        conn.Close()
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim itemId = Val(TextBox7.Text)
+        Dim description = TextBox1.Text
+        Dim costPrice = TextBox2.Text
+        Dim sellPrice = TextBox3.Text
+        Dim quantity = NumericUpDown1.Value
+        Dim i As Integer = 0
+
+        Try
+            conn.Open()
+            sql = $"UPDATE item SET description = '{description}', cost_price = {costPrice}, sell_price = {sellPrice} WHERE item_id = {itemId} "
+
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record updated")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+            sql = $"UPDATE stock SET quantity = {quantity}  WHERE item_id = {itemId} "
+
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record updated")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        End Try
+        conn.Close()
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim itemId = Val(TextBox7.Text)
+        Dim i As Integer
+        Try
+            conn.Open()
+
+            Dim ans = MessageBox.Show("do you want to delete this record?", "record deleted", MessageBoxButtons.YesNoCancel)
+            If ans = DialogResult.Yes Then
+                sql = $"DELETE FROM stock WHERE item_id = {itemId}"
+                dbcomm = New MySqlCommand(sql, conn)
+                i = dbcomm.ExecuteNonQuery
+
+                If (i > 0) Then
+                    MsgBox("stock deleted")
+                Else
+                    MsgBox("stock not deleted")
+
+                End If
+                sql = $"DELETE FROM item WHERE item_id = {itemId}"
+                dbcomm = New MySqlCommand(sql, conn)
+                i = dbcomm.ExecuteNonQuery
+
+                If (i > 0) Then
+                    MsgBox("record deleted")
+                Else
+                    MsgBox("record not deleted")
+
+                End If
+            End If
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+
+        End Try
+        conn.Close()
+
+CREATE TABLE stocks(
+    item_id INT NOT NULL PRIMARY KEY,
+    quantity INT,
+    INDEX(item_id),
+    CONSTRAINT stock_item_id_fk FOREIGN KEY (item_id)REFERENCES items(item_id)
+)
+ALTER table items DROP COLUMN quantity
+INSERT INTO items(name, cost_price, sell_price, supplier_name)
+VALUES('foo', 50.50, 65.00,  'bar');
+INSERT INTO stocks(item_id, quantity) VALUES(LAST_INSERT_ID(), 10);
 
 
 
