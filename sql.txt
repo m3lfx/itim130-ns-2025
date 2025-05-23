@@ -579,46 +579,47 @@ Public Class Form1
     Public DataAdapter1 As MySqlDataAdapter
     Public ds As DataSet
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Try
+         Try
             conn.Open()
-            sql = "select * from customer"
-            dbcomm = New MySqlCommand(sql, conn)
+            sql = "SELECT * FROM customers ORDER BY customer_id DESC"
+
             DataAdapter1 = New MySqlDataAdapter(sql, conn)
             ds = New DataSet()
-            DataAdapter1.Fill(ds, "customer1")
+            DataAdapter1.Fill(ds, "customers")
             DataGridView1.DataSource = ds
-            DataGridView1.DataMember = "customer1"
+            DataGridView1.DataMember = "customers"
 
 
         Catch ex As Exception
             MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
 
         End Try
+        conn.Close()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim customer_id As Integer
-        Try
+         Try
             conn.Open()
-            'MsgBox("database connected")
             customer_id = Val(TextBox1.Text)
-            sql = "SELECT * FROM customer WHERE customer_id = " & customer_id
+            sql = "SELECT * FROM customers WHERE customer_id = " & customer_id
+            Label1.Text = sql
             dbcomm = New MySqlCommand(sql, conn)
             dbread = dbcomm.ExecuteReader()
             dbread.Read()
-            'TextBox2.Text = dbread("customer_id")
-            TextBox2.Text = dbread("title")
-            TextBox3.Text = dbread("lname")
-            TextBox4.Text = dbread("fname")
-            TextBox5.Text = dbread("addressline")
-            TextBox6.Text = dbread("town")
-            TextBox7.Text = dbread("zipcode")
-            TextBox8.Text = dbread("phone")
-        Catch ex As MySqlException
-            MsgBox("no customer found")
-            conn.Close()
+
+            TextBox2.Text = dbread("first_name")
+            TextBox3.Text = dbread("last_name")
+            TextBox4.Text = dbread("address")
+            TextBox5.Text = dbread("city")
+            TextBox6.Text = dbread("phone")
+            TextBox7.Text = dbread("zipcode2")
+
+        Catch ex As MysqlException
+            MsgBox(ex.Message)
         End Try
         conn.Close()
+        
     End Sub
 
     Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
@@ -704,6 +705,7 @@ Public Class Form1
         Catch ex As MySqlException
             MsgBox(ex.Message)
         End Try
+        conn.close()
     End Sub
 End Class
 
