@@ -1063,6 +1063,44 @@ Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Han
         End Try
         conn.Close()
 
+//update item stock
+Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+            conn.Open()
+            sql = $"UPDATE items SET name = '{TextBox1.Text}', cost_price = {Convert.ToDecimal(TextBox2.Text)}, sell_price = {Convert.ToDecimal(TextBox3.Text) }, supplier_name = '{TextBox4.Text}' WHERE item_id = {Val(ComboBox1.SelectedItem)}"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            Dim i As Integer = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+            sql = $"UPDATE stocks SET quantity = {Val(NumericUpDown1.Value)} WHERE item_id = {Val(ComboBox1.SelectedItem)}"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+        End Try
+        conn.Close()
+
+    End Sub
+
 
 
 
