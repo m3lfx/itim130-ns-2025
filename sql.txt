@@ -990,6 +990,46 @@ ORDER BY i.item_id DESC"
         conn.Close()
     End Sub
 
+    INSERT INTO items(name, cost_price, sell_price, supplier_name)
+VALUES('watch', 100, 200,  'casio');
+ INSERT INTO items(name, cost_price, sell_price, supplier_name)
+VALUES('calculator', 100, 200,  'casio');
+
+Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
+            conn.Open()
+            sql = $"INSERT INTO items (name, cost_price, sell_price, supplier_name) VALUES('{TextBox1.Text}', {Convert.ToDecimal(TextBox2.Text)}, {Convert.ToDecimal(TextBox3.Text)}, '{TextBox4.Text}')"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            Dim i As Integer = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+            sql = $"INSERT INTO stocks (item_id, quantity) VALUES(LAST_INSERT_ID(), {Val(NumericUpDown1.Value)} )"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
+        conn.Close()
+
+    End Sub
 
 
 
