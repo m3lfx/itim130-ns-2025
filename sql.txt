@@ -1039,6 +1039,30 @@ Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Clic
 
             End While
 
+Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBox1.SelectedIndexChanged
+        Try
+            conn.Open()
+            sql = $"SELECT i.item_id as 'item id', i.name AS 'product name', i.cost_price AS cost, i.sell_price AS 'selling price', s.quantity, i.supplier_name FROM items i INNER JOIN stocks s ON (i.item_id = s.item_id) WHERE i.item_id = {Val(ComboBox1.Text)}"
+
+            dbcomm = New MySqlCommand(sql, conn)
+            dbread = dbcomm.ExecuteReader()
+            dbread.Read()
+
+            TextBox1.Text = dbread("product name")
+            TextBox2.Text = dbread("cost")
+            TextBox3.Text = dbread("selling price")
+            TextBox4.Text = dbread("supplier_name")
+            NumericUpDown1.Value = dbread("quantity")
+
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+        End Try
+        conn.Close()
+
 
 
 
