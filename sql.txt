@@ -710,6 +710,12 @@ Public Class Form1
 End Class
 
 //items crud 
+drop quantity column on items
+ALTER TABLE items DROP COLUMN quantity
+CREATE TABLE stocks (
+    item_id INT NOT NULL PRIMARY KEY,
+    quantity INT NOT NULL DEFAULT 0
+);
 
 Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
@@ -954,14 +960,15 @@ Private Sub TextBox4_TextChanged(sender As Object, e As EventArgs) Handles TextB
 
 CREATE TABLE stocks(
     item_id INT NOT NULL PRIMARY KEY,
-    quantity INT,
+    quantity INT NOT NULL DEFAULT 0,
     INDEX(item_id),
-    CONSTRAINT stock_item_id_fk FOREIGN KEY (item_id)REFERENCES items(item_id)
+    CONSTRAINT stock_item_id_fk FOREIGN KEY (item_id) REFERENCES items(item_id)
 )
 ALTER table items DROP COLUMN quantity
 INSERT INTO items(name, cost_price, sell_price, supplier_name)
 VALUES('foo', 50.50, 65.00,  'bar');
 INSERT INTO stocks(item_id, quantity) VALUES(LAST_INSERT_ID(), 10);
+INSERT INTO stocks(item_id, quantity) VALUES(2, 10),(3,5),(4,6),(5,9),(6,10),(7,15),(10,87)
 
 
 
