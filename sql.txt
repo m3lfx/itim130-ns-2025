@@ -1031,6 +1031,14 @@ Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Clic
 
     End Sub
 
+    dbcomm = New MySqlCommand(sql, conn)
+            dbread = dbcomm.ExecuteReader()
+
+            While dbread.Read()
+                ComboBox1.Items.Add(dbread("item id"))
+
+            End While
+
 
 
 
