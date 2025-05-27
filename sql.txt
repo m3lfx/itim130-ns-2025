@@ -710,6 +710,25 @@ Public Class Form1
 End Class
 
 //items crud 
+
+Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            conn.Open()
+            sql = "SELECT * FROM items ORDER BY item_id DESC"
+
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "items")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "items"
+
+
+        Catch ex As Exception
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+        conn.Close()
+    End Sub
 Try
             conn.Open()
             sql = "SELECT i.item_id AS 'id', i.name AS name, i.cost_price AS cost, i.sell_price as `SELling price`, s.quantity FROM items i INNER  JOIN stocks s ON (i.item_id = s.item_id) ORDER BY i.item_id DESC"
@@ -943,6 +962,8 @@ ALTER table items DROP COLUMN quantity
 INSERT INTO items(name, cost_price, sell_price, supplier_name)
 VALUES('foo', 50.50, 65.00,  'bar');
 INSERT INTO stocks(item_id, quantity) VALUES(LAST_INSERT_ID(), 10);
+
+
 
 
 
