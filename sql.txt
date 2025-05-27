@@ -970,6 +970,26 @@ VALUES('foo', 50.50, 65.00,  'bar');
 INSERT INTO stocks(item_id, quantity) VALUES(LAST_INSERT_ID(), 10);
 INSERT INTO stocks(item_id, quantity) VALUES(2, 10),(3,5),(4,6),(5,9),(6,10),(7,15),(10,87)
 
+ Try
+            conn.Open()
+            'sql = "SELECT * FROM items ORDER BY item_id DESC"
+            sql = "SELECT i.item_id, i.name AS 'product name', i.cost_price AS cost, i.sell_price AS 'selling price', s.quantity FROM items i INNER JOIN stocks s ON (i.item_id = s.item_id) 
+ORDER BY i.item_id DESC"
+
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "items")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "items"
+
+
+        Catch ex As Exception
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+        conn.Close()
+    End Sub
+
 
 
 
