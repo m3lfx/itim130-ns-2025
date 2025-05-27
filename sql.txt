@@ -1101,6 +1101,61 @@ Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Clic
 
     End Sub
 
+//item delete
+Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Try
+            conn.Open()
+            sql = $"DELETE FROM stocks WHERE item_id = {Val(ComboBox1.SelectedItem)}"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            Dim i As Integer = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("stock deleted")
+            Else
+                MsgBox("stock not deleted")
+
+            End If
+
+            sql = $"DELETE FROM orderline WHERE item_id = {Val(ComboBox1.SelectedItem)}"
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("item orderline deleted")
+            Else
+                MsgBox("item orderline deleted")
+
+            End If
+
+            sql = $"DELETE FROM items WHERE item_id = {Val(ComboBox1.SelectedItem)}"
+            dbcomm = New MySqlCommand(sql, conn)
+            i = dbcomm.ExecuteNonQuery
+
+            If (i > 0) Then
+                MsgBox("item deleted")
+            Else
+                MsgBox("item not deleted")
+
+            End If
+            TextBox1.Clear()
+            TextBox2.Clear()
+            TextBox3.Clear()
+            TextBox4.Clear()
+            NumericUpDown1.Value = 0
+
+
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+        End Try
+        conn.Close()
+
+    End Sub
+
 
 
 
