@@ -1183,11 +1183,11 @@ GRANT ALL ON db_sales_ns_2025.* to 'itim130ns'@'localhost' IDENTIFIED BY 'passwo
 
 GRANT ALL ON db_sales_ns_2025.* to itim130s@'%' IDENTIFIED BY 'password';
 
-GRANT SELECT (first_name,last_name)  ON db_sales_s_2025.customers to user500@localhost IDENTIFIED BY 'foo';
+GRANT SELECT (first_name,last_name)  ON db_sales_ns_2025.customers to user4@localhost IDENTIFIED BY 'foo';
 FLUSH PRIVILEGES;
 
 
-GRANT SELECT, UPDATE, DELETE  ON db_sales_s_2025.items to user500@localhost 
+GRANT SELECT, UPDATE, DELETE  ON db_sales_ns_2025.items to 'user4'@'localhost' 
 SHOW GRANTS FOR user4;
 
 GRANT SELECT ON <database name>.<view name> TO <user>@<host> IDENTIFIED BY '<password>
@@ -1195,7 +1195,7 @@ GRANT SELECT ON <database name>.<view name> TO <user>@<host> IDENTIFIED BY '<pas
 GRANT EXECUTE ON <database name>.<procedure name> TO <user>@<host> IDENTIFIED BY '<password>'
 
 SHOW GRANTS FOR 'root';
-REVOKE DELETE ON db_sales_s_2025.items from user500@localhost;
+REVOKE DELETE ON db_sales_ns_2025.items from user4@localhost;
 FLUSH PRIVILEGES;
 
 mysql backup /restore using mysqldump
@@ -1325,6 +1325,8 @@ Private Sub cboitemid_SelectedIndexChanged(sender As Object, e As EventArgs) Han
         Next
         Label1.Text = total
     End Sub
+
+    INSERT INTO items( name, cost_price, sell_price, supplier_name) VALUES( 'laptop', 100.00, 150.50, 'acer')
 
 
 
