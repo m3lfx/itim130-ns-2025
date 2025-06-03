@@ -1143,9 +1143,6 @@ Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Clic
             TextBox3.Clear()
             TextBox4.Clear()
             NumericUpDown1.Value = 0
-
-
-
         Catch ex As MySqlException
             MsgBox(ex.Message)
         Catch ex As Exception
@@ -1154,6 +1151,179 @@ Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Clic
         End Try
         conn.Close()
 
+    End Sub
+
+User Administration
+Create new users using CREATE USER statement
+CREATE USER user IDENTIFIED BY password
+
+CREATE USER 'dbadmin1'@'localhost' IDENTIFIED BY 'p@ssw0rd';
+
+allow user to connect from any host you use the % wildcard, which means any host.
+CREATE USER superadmin9000@'%'
+IDENTIFIED BY 'p@ssw0rd';
+
+MySQL Changing Password for Accounts
+USE mysql;
+ 
+ALTER USER dbadmin1@localhost IDENTIFIED BY 'p@ssw0rd1234';
+ALTER USER root@localhost IDENTIFIED BY 'your password';
+ ALTER USER itim130s@localhost IDENTIFIED BY 'p@ssw0rd';
+FLUSH PRIVILEGES; 
+
+FLUSH PRIVILEGES statement to reload privileges from the grant table in the mysql database.
+
+MySQL GRANT Statement Syntax
+GRANT privileges (column_list)
+ON [object_type] privilege_level
+TO account [IDENTIFIED BY 'password']
+ 
+GRANT ALL ON db_sales_s_2025.* to 'dbadmin1'@'localhost';
+GRANT ALL ON db_sales_s_2025.* to 'itim130s'@'localhost';
+
+GRANT ALL ON db_sales_s_2025.* to itim130s@'%' IDENTIFIED BY 'password';
+
+GRANT SELECT (first_name,last_name)  ON db_sales_s_2025.customers to user500@localhost IDENTIFIED BY 'foo';
+FLUSH PRIVILEGES;
+
+
+GRANT SELECT, UPDATE, DELETE  ON db_sales_s_2025.items to user500@localhost 
+SHOW GRANTS FOR user4;
+
+GRANT SELECT ON <database name>.<view name> TO <user>@<host> IDENTIFIED BY '<password>
+
+GRANT EXECUTE ON <database name>.<procedure name> TO <user>@<host> IDENTIFIED BY '<password>'
+
+SHOW GRANTS FOR 'root';
+REVOKE DELETE ON db_sales_s_2025.items from user500@localhost;
+FLUSH PRIVILEGES;
+
+mysql backup /restore using mysqldump
+mysqldump -u [username] -p[password] [database_name,db2,db3...] > /path/to/[dump_file.sql]
+mysql -u [uname] -p[pass] [db_to_restore] < [backupfile.sql]
+
+/transaction
+BEGIN;
+UPDATE items SET cost_price = 100.00 WHERE item_id =13;
+COMMIT;
+ROLLBACK
+
+BEGIN; 
+SELECT * FROM customers WHERE customer_id = 45;
+INSERT INTO orders(date_ordered, date_delivery, status, customer_id)
+VALUES(now(), NULL, 'processing', 45);
+INSERT INTO orderline (order_id, item_id, quantity)
+VALUES(LAST_INSERT_ID(), 19, 2), (LAST_INSERT_ID(), 20, 4),(LAST_INSERT_ID(), 21, 10);
+
+UPDATE stocks SET quantity = quantity - 2 WHERE item_id = 19;
+UPDATE stocks SET quantity = quantity - 4 WHERE item_id = 20;
+UPDATE stocks SET quantity = quantity - 10 WHERE item_id = 21;
+COMMIT
+
+
+Imports MySql.Data.MySqlClient
+Public Class Form3
+    Dim conn As MySqlConnection = New MySqlConnection("Data Source=localhost;Database=itim130s;User=itim130s;Password=p@ssw0rd;")
+    'Public dbconn As New MySqlConnection
+    Public sql As String
+    Public dbcomm As MySqlCommand
+    Public dbread As MySqlDataReader
+    Public DataAdapter1 As MySqlDataAdapter
+    Public ds As DataSet
+    Private Sub Form3_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim id As Integer = Val(Form1.TextBox1.Text)
+        cbocid.SelectedText = id
+        Try
+            conn.Open()
+            Sql = "SELECT * FROM customer"
+            dbcomm = New MySqlCommand(Sql, conn)
+            dbread = dbcomm.ExecuteReader()
+
+
+            While dbread.Read()
+                cbocid.Items.Add(dbread("customer_id"))
+
+            End While
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+        End Try
+        dbread.Close()
+
+        Try
+            Sql = "SELECT * FROM item i INNER JOIN stock s ON i.item_id = s.item_id"
+            'sql = "SELECT * FROM item"
+            dbcomm = New MySqlCommand(Sql, conn)
+            dbread = dbcomm.ExecuteReader()
+            While dbread.Read()
+                cboitemid.Items.Add(dbread("item_id"))
+            End While
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+
+        End Try
+        dbread.Close()
+        conn.Close()
+
+    End Sub
+End Class
+
+Private Sub cboitemid_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboitemid.SelectedIndexChanged
+        txtDescription.Clear()
+        txtSellPrice.Clear()
+        txtQty.Clear()
+
+        'Dim itemId As Integer = Val(cboitemid.SelectedItem)
+        Try
+            conn.Open()
+            sql = $"SELECT i.name, i.sell_price, s.quantity FROM items i INNER JOIN stocks s WHERE i.item_id = {Val(cboitemid.SelectedItem)}"
+            dbcomm = New MySqlCommand(sql, conn)
+            dbread = dbcomm.ExecuteReader()
+            dbread.Read()
+            txtdescription.Text = dbread("name")
+            txtSellPrice.Text = dbread("sell_price")
+            txtQty.Text = Val(dbread("quantity"))
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+
+        End Try
+        dbread.Close()
+        conn.Close()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        DataGridView1.Rows.Add(Val(cboitemid.SelectedItem), txtdescription.Text, Convert.ToDecimal(txtSellPrice.Text), Val(txtQty.Text))
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        DataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        If DataGridView1.SelectedRows.Count > 0 Then
+            'you may want to add a confirmation message, and if the user confirms delete
+            DataGridView1.Rows.Remove(DataGridView1.SelectedRows(0))
+        Else
+            MessageBox.Show("Select 1 row before you hit Delete")
+        End If
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim total As Decimal = 0.0
+
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            total += (row.Cells("sell_price").Value * row.Cells("qty").Value)
+
+        Next
+        Label1.Text = total
     End Sub
 
 
