@@ -1330,7 +1330,60 @@ Private Sub cboitemid_SelectedIndexChanged(sender As Object, e As EventArgs) Han
 
 INSERT INTO stocks(item_id, quantity) VALUES(11, 10),(12,5),(13,6),(14,9),(16,10)
 
+ Dim i As Integer = 0
+        Dim customerId As Integer = Val(cbocid.Text)
+        Dim myTrans As MySqlTransaction
+        conn.Open()
+        myTrans = conn.BeginTransaction()
+        Try
 
+            sql = $"INSERT INTO orderinfo (customer_id, date_placed, date_shipped, shipping) VALUES({customerId}, now(), '{Convert.ToDateTime(DateTimePicker1.Value).ToString("yyyy-MM-dd")}', {Val(txtShip.Text)} )"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+
+            i = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                sql = $"INSERT INTO orderline (orderinfo_id, item_id, quantity) VALUES(last_insert_id(), {row.Cells("item_id").Value}, {row.Cells("qty").Value} )"
+                Label1.Text = sql
+                dbcomm = New MySqlCommand(sql, conn)
+                i = dbcomm.ExecuteNonQuery
+                If (i > 0) Then
+                    MsgBox("record saved")
+                Else
+                    MsgBox("record not saved")
+
+                End If
+                sql = $"UPDATE stock SET quantity = quantity - {Val(row.Cells("qty").Value)} WHERE item_id = {Val(row.Cells("item_id").Value)}"
+                dbcomm = New MySqlCommand(sql, conn)
+                i = dbcomm.ExecuteNonQuery
+                If (i > 0) Then
+                    MsgBox("record saved")
+                Else
+                    MsgBox("record not saved")
+
+                End If
+            Next
+            myTrans.Commit()
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            myTrans.Rollback()
+
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            myTrans.Rollback()
+
+            conn.Close()
+        End Try
+        conn.Close()
 
 
 
