@@ -1385,6 +1385,63 @@ INSERT INTO stocks(item_id, quantity) VALUES(11, 10),(12,5),(13,6),(14,9),(16,10
         End Try
         conn.Close()
 
+     Dim i As Integer = 0
+        Dim customerId As Integer = Val(cbocid.Text)
+        Dim myTrans As MySqlTransaction
+
+
+        Try
+            conn.Open()
+            myTrans = conn.BeginTransaction()
+
+            sql = $"INSERT INTO orders (customer_id, date_ordered, date_delivered, status) VALUES({customerId}, now(), '{Convert.ToDateTime(DateTimePicker1.Value).ToString("yyyy-MM-dd")}', {Val(txtShip.Text)} )"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+
+            i = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+
+            For Each row As DataGridViewRow In DataGridView1.Rows
+                sql = $"INSERT INTO orderline (order_id, item_id, quantity) VALUES(last_insert_id(), {row.Cells("item_id").Value}, {row.Cells("qty").Value})"
+                Label1.Text = sql
+                dbcomm = New MySqlCommand(sql, conn)
+                i = dbcomm.ExecuteNonQuery
+                If (i > 0) Then
+                    MsgBox("record saved")
+                Else
+                    MsgBox("record not saved")
+
+                End If
+                sql = $"UPDATE stocks SET quantity = quantity - {Val(row.Cells("qty").Value)} WHERE item_id = {Val(row.Cells("item_id").Value)}"
+                dbcomm = New MySqlCommand(sql, conn)
+                i = dbcomm.ExecuteNonQuery
+                If (i > 0) Then
+                    MsgBox("record saved")
+                Else
+                    MsgBox("record not saved")
+
+                End If
+            Next
+            myTrans.Commit()
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            myTrans.Rollback()
+
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            myTrans.Rollback()
+
+            conn.Close()
+        End Try
+        conn.Close()
+
 
 
 
