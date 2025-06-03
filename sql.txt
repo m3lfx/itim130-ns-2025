@@ -1157,7 +1157,7 @@ User Administration
 Create new users using CREATE USER statement
 CREATE USER user IDENTIFIED BY password
 
-CREATE USER 'dbadmin1'@'localhost' IDENTIFIED BY 'p@ssw0rd';
+CREATE USER 'dbadmin2'@'localhost' IDENTIFIED BY 'p@ssw0rd';
 
 allow user to connect from any host you use the % wildcard, which means any host.
 CREATE USER superadmin9000@'%'
@@ -1166,7 +1166,7 @@ IDENTIFIED BY 'p@ssw0rd';
 MySQL Changing Password for Accounts
 USE mysql;
  
-ALTER USER dbadmin1@localhost IDENTIFIED BY 'p@ssw0rd1234';
+ALTER USER 'dbadmin2'@'localhost' IDENTIFIED BY 'p@ssw0rd1234';
 ALTER USER root@localhost IDENTIFIED BY 'your password';
  ALTER USER itim130s@localhost IDENTIFIED BY 'p@ssw0rd';
 FLUSH PRIVILEGES; 
@@ -1178,10 +1178,10 @@ GRANT privileges (column_list)
 ON [object_type] privilege_level
 TO account [IDENTIFIED BY 'password']
  
-GRANT ALL ON db_sales_s_2025.* to 'dbadmin1'@'localhost';
-GRANT ALL ON db_sales_s_2025.* to 'itim130s'@'localhost';
+GRANT ALL ON db_sales_ns_2025.* to 'dbadmin2'@'localhost';
+GRANT ALL ON db_sales_ns_2025.* to 'itim130ns'@'localhost' IDENTIFIED BY 'password';
 
-GRANT ALL ON db_sales_s_2025.* to itim130s@'%' IDENTIFIED BY 'password';
+GRANT ALL ON db_sales_ns_2025.* to itim130s@'%' IDENTIFIED BY 'password';
 
 GRANT SELECT (first_name,last_name)  ON db_sales_s_2025.customers to user500@localhost IDENTIFIED BY 'foo';
 FLUSH PRIVILEGES;
