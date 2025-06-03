@@ -1231,12 +1231,12 @@ Public Class Form3
     Public DataAdapter1 As MySqlDataAdapter
     Public ds As DataSet
     Private Sub Form3_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim id As Integer = Val(Form1.TextBox1.Text)
+       Dim id As Integer = Val(Form1.TextBox1.Text)
         cbocid.SelectedText = id
         Try
             conn.Open()
-            Sql = "SELECT * FROM customer"
-            dbcomm = New MySqlCommand(Sql, conn)
+            sql = "SELECT customer_id FROM customers"
+            dbcomm = New MySqlCommand(sql, conn)
             dbread = dbcomm.ExecuteReader()
 
 
@@ -1254,9 +1254,9 @@ Public Class Form3
         dbread.Close()
 
         Try
-            Sql = "SELECT * FROM item i INNER JOIN stock s ON i.item_id = s.item_id"
+            sql = "SELECT * FROM items i INNER JOIN stocks s ON i.item_id = s.item_id"
             'sql = "SELECT * FROM item"
-            dbcomm = New MySqlCommand(Sql, conn)
+            dbcomm = New MySqlCommand(sql, conn)
             dbread = dbcomm.ExecuteReader()
             While dbread.Read()
                 cboitemid.Items.Add(dbread("item_id"))
@@ -1276,14 +1276,14 @@ Public Class Form3
 End Class
 
 Private Sub cboitemid_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboitemid.SelectedIndexChanged
-        txtDescription.Clear()
+       txtDescription.Clear()
         txtSellPrice.Clear()
         txtQty.Clear()
 
         'Dim itemId As Integer = Val(cboitemid.SelectedItem)
         Try
             conn.Open()
-            sql = $"SELECT i.name, i.sell_price, s.quantity FROM items i INNER JOIN stocks s WHERE i.item_id = {Val(cboitemid.SelectedItem)}"
+            sql = $"SELECT i.name, i.sell_price, s.quantity FROM items i INNER JOIN stocks s ON i.item_id = s.item_id WHERE i.item_id = {Val(cboitemid.SelectedItem)}"
             dbcomm = New MySqlCommand(sql, conn)
             dbread = dbcomm.ExecuteReader()
             dbread.Read()
