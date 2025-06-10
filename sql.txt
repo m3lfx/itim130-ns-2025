@@ -1467,8 +1467,34 @@ Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs) Handles TextB
     End Sub
 
 get all customers' orders and compute the total
-SELECT o.order_id, sum(i.sell_price * ol.quantity) AS total, o.date_ordered
+SELECT o.order_id, concat(first_name, " ", last_name) as name, sum(i.sell_price * ol.quantity) AS total, o.date_ordered
 FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id 
 INNER JOIN orderline ol ON o.order_id = ol.order_id
 INNER JOIN items i ON i.item_id = ol.item_id
 GROUP BY ol.order_id
+
+Private Sub Form5_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Try
+            conn.Open()
+            sql = $"SELECT o.order_id, concat(first_name, ' ', last_name) as name, sum(i.sell_price * ol.quantity) AS total, o.date_ordered FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id INNER JOIN orderline ol ON o.order_id = ol.order_id INNER JOIN items i ON i.item_id = ol.item_id GROUP BY ol.order_id"
+
+            dbcomm = New MySqlCommand(sql, conn)
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+
+
+            DataAdapter1.Fill(ds, "orders")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "orders"
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+            conn.Close()
+
+        End Try
+
+        conn.Close()
+    End Sub
