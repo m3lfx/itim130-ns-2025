@@ -1444,4 +1444,26 @@ INSERT INTO stocks(item_id, quantity) VALUES(11, 10),(12,5),(13,6),(14,9),(16,10
 
 
 
+//item search_item
+Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs) Handles TextBox5.TextChanged
+        Try
+            conn.Open()
+            'sql = "SELECT * FROM items ORDER BY item_id DESC"
+            sql = $"SELECT i.item_id as 'item id', i.name AS 'product name', i.cost_price AS cost, i.sell_price AS 'selling price', s.quantity, i.supplier_name as supplier FROM items i INNER JOIN stocks s ON (i.item_id = s.item_id) WHERE i.name LIKE '%{TextBox5.Text}%' ORDER BY i.item_id DESC"
+
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "items search")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "items search"
+
+        Catch ex As MySqlException
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+        Catch ex As Exception
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+        conn.Close()
+    End Sub
+
 
