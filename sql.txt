@@ -1466,4 +1466,9 @@ Private Sub TextBox5_TextChanged(sender As Object, e As EventArgs) Handles TextB
         conn.Close()
     End Sub
 
-
+get all customers' orders and compute the total
+SELECT o.order_id, sum(i.sell_price * ol.quantity) AS total, o.date_ordered
+FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id 
+INNER JOIN orderline ol ON o.order_id = ol.order_id
+INNER JOIN items i ON i.item_id = ol.item_id
+GROUP BY ol.order_id
