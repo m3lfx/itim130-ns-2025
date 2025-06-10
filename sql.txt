@@ -1498,3 +1498,26 @@ Private Sub Form5_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         conn.Close()
     End Sub
+
+
+
+Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextBox3.TextChanged
+        Try
+            conn.Open()
+
+            sql = $"SELECT o.order_id, concat(first_name, ' ', last_name) as name, sum(i.sell_price * ol.quantity) AS total, o.date_ordered FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id INNER JOIN orderline ol ON o.order_id = ol.order_id INNER JOIN items i ON i.item_id = ol.item_id WHERE o.order_id LIKE '%{TextBox3.Text}%' GROUP BY ol.order_id"
+
+            DataAdapter1 = New MySqlDataAdapter(sql, conn)
+            ds = New DataSet()
+            DataAdapter1.Fill(ds, "items search")
+            DataGridView1.DataSource = ds
+            DataGridView1.DataMember = "items search"
+
+        Catch ex As MySqlException
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+        Catch ex As Exception
+            MsgBox("Error in collecting data from Database. Error is :" & ex.Message)
+
+        End Try
+        conn.Close()
+    End Sub
