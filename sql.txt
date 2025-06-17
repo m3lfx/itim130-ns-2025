@@ -1607,4 +1607,17 @@ WHERE su.code = 'MATH1'
 Change the number of units of Machine design subject to 3
 UPDATE subjects SET units = 3 WHERE subject_id = 4
 WHERE subject_code = 'MEPL 413'
+
 left join
+SELECT c.last_name, o.order_id, o.date_ordered, ol.item_id, ol.quantity, i.name
+FROM customers c LEFT OUTER JOIN orders o  ON c.customer_id = o.customer_id 
+LEFT OUTER JOIN orderline ol ON o.order_id = ol.order_id
+LEFT OUTER JOIN items i ON i.item_id = ol.item_id
+
+SELECT c.last_name, o.order_id, o.date_ordered, ol.item_id, i.name
+FROM customers c LEFT OUTER JOIN orders o  ON c.customer_id = o.customer_id 
+INNER JOIN orderline ol ON o.order_id = ol.order_id
+LEFT OUTER JOIN items i ON i.item_id = ol.item_id
+
+SELECT c.last_name, o.order_id, o.date_ordered 
+FROM orders o RIGHT OUTER JOIN customers c  ON c.customer_id = o.customer_id
