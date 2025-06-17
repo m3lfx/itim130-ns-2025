@@ -1568,3 +1568,14 @@ Private Sub TextBox3_TextChanged(sender As Object, e As EventArgs) Handles TextB
         End Try
         conn.Close()
     End Sub
+
+
+quiz answer
+1.	Fetch all students and their respective course that live in USA.
+SELECT c.course_id, c.title, last_name, first_name FROM students s INNER JOIN courses c ON c.courses_id = s.course_id WHERE address = 'usa'
+
+2. Fetch all students, the subjects they enrolled and the grades they received.
+
+SELECT st.first_name, st.last_name, su.code, ss.grade FROM subjects su INNER JOIN student_subject ss ON su.subject_id = ss.subject_id INNER JOIN students st ON st.student_id = ss.student_id
+
+left join
