@@ -1578,4 +1578,33 @@ SELECT c.course_id, c.title, last_name, first_name FROM students s INNER JOIN co
 
 SELECT st.first_name, st.last_name, su.code, ss.grade FROM subjects su INNER JOIN student_subject ss ON su.subject_id = ss.subject_id INNER JOIN students st ON st.student_id = ss.student_id
 
+Fetch all students with “reyes” on their last name.
+SELECT first_name, last_name FROM students WHERE last_name LIKE '%reyes%'
+
+4.	Create a new BSIT student.
+INSERT INTO students (last_name, first_name, address, course_id)
+VALUES('hammet', 'kirk', 'canada', 1)
+
+5. INSERT INTO student_subject (student_id, subject_id, grade)
+VALUES(10, 6, NULL)
+
+6.	Update the grade of the newly created student to “1.75”.
+
+UPDATE student_subject SET grade = 1.75 WHERE student_id = 10
+
+7.	Fetch all students with a grade of “5.0” in the subject ITIM130
+SELECT st.first_name, st.last_name, su.code, ss.grade FROM subjects su INNER JOIN student_subject ss ON su.subject_id = ss.subject_id INNER JOIN students st ON st.student_id = ss.student_id
+WHERE ss.grade = '5.0' AND su.title = 'ITIM130'
+
+8.	Delete all students from the USA or from Canada.
+DELETE FROM students WHERE address = 'usa' OR address = 'canada'
+WHERE address IN ('usa', 'canada')
+
+9.	Get all students that are enrolled in MATH1.
+SELECT st.first_name, st.last_name, su.code, su.title FROM subjects su INNER JOIN student_subject ss ON su.subject_id = ss.subject_id INNER JOIN students st ON st.student_id = ss.student_id 
+WHERE su.code = 'MATH1'
+
+Change the number of units of Machine design subject to 3
+UPDATE subjects SET units = 3 WHERE subject_id = 4
+WHERE subject_code = 'MEPL 413'
 left join
