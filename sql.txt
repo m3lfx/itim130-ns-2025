@@ -1621,3 +1621,72 @@ LEFT OUTER JOIN items i ON i.item_id = ol.item_id
 
 SELECT c.last_name, o.order_id, o.date_ordered 
 FROM orders o RIGHT OUTER JOIN customers c  ON c.customer_id = o.customer_id
+
+
+
+create users table 
+CREATE TABLE users (
+    user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(200),
+    password TEXT
+)
+
+Dim email As String = TextBox1.Text
+        Dim password As String = TextBox2.Text
+        Try
+            conn.Open()
+
+            sql = $"INSERT INTO users (email, password) VALUES('{email}', SHA1('{password}'))"
+            Label1.Text = sql
+
+            dbcomm = New MySqlCommand(sql, conn)
+
+            Dim i As Integer = dbcomm.ExecuteNonQuery
+            If (i > 0) Then
+                MsgBox("record saved")
+            Else
+                MsgBox("record not saved")
+
+            End If
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+            conn.Close()
+        End Try
+        conn.Close()
+
+Dim email As String = TextBox1.Text
+        Dim password As String = TextBox2.Text
+        Try
+            conn.Open()
+
+            sql = $"SELECT 1 FROM users WHERE email = '{email}' AND password = SHA1('{password}')"
+            Label1.Text = sql
+            dbcomm = New MySqlCommand(sql, conn)
+            dbread = dbcomm.ExecuteReader()
+            'dbread.Read()
+            If (dbread.Read) Then
+                Me.Hide()
+
+                Form3.Show()
+            Else
+                MsgBox("invalid email or password")
+            End If
+
+
+
+        Catch ex As MySqlException
+            MsgBox(ex.Message)
+
+            conn.Close()
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+            conn.Close()
+        End Try
+        conn.Close()
+    End Sub
