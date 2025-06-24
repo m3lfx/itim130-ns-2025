@@ -1690,3 +1690,17 @@ Dim email As String = TextBox1.Text
         End Try
         conn.Close()
     End Sub
+
+    quiz 2
+1.	Fetch all the albums of the group black pink get the album title, band name and release date
+
+SELECT al.title, ar.name, al.date_released
+FROM  artists ar INNER JOIN albums al ON ar.artist_id = al.artist_id 
+WHERE ar.name = 'black pink'
+WHERE ar.artist_id = 1
+
+SELECT ar.name, al.title, s.title
+FROM artists ar INNER JOIN albums al ON ar.artist_id = al.artist_id
+INNER JOIN songs s ON al.album_id = s.album_id
+WHERE ar.name = 'the beatles'
+WHERE ar.artist_id = 4
